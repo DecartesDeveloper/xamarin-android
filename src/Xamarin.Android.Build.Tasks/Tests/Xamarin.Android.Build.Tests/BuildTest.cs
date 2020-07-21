@@ -3753,7 +3753,6 @@ AAAAAAAAAAAAPQAAAE1FVEEtSU5GL01BTklGRVNULk1GUEsBAhQAFAAICAgAJZFnS7uHtAn+AQAA
 		public void XA0119 ()
 		{
 			var proj = new XamarinAndroidApplicationProject ();
-			proj.SetProperty ("Optimize", "False");
 			proj.SetProperty ("_XASupportsFastDev", "True");
 			proj.SetProperty (proj.DebugProperties, "AndroidLinkMode", "Full");
 			using (var b = CreateApkBuilder (Path.Combine ("temp", TestName))) {
@@ -3768,7 +3767,6 @@ AAAAAAAAAAAAPQAAAE1FVEEtSU5GL01BTklGRVNULk1GUEsBAhQAFAAICAgAJZFnS7uHtAn+AQAA
 		public void XA0119AAB ()
 		{
 			var proj = new XamarinAndroidApplicationProject ();
-			proj.SetProperty ("Optimize", "False");
 			proj.SetProperty ("_XASupportsFastDev", "True");
 			proj.SetProperty ("AndroidPackageFormat", "aab");
 			using (var builder = CreateApkBuilder ()) {
