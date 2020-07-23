@@ -57,6 +57,7 @@ namespace Xamarin.Android.Build.Tests
 			XASdkProject proj;
 			proj = new XASdkProject ();
 			proj.SetRuntimeIdentifier (DeviceAbi);
+			string runtimeId = proj.GetProperty (KnownProperties.RuntimeIdentifier);
 
 			var relativeProjDir = Path.Combine ("temp", TestName);
 			var fullProjDir = Path.Combine (Root, relativeProjDir);
@@ -87,19 +88,20 @@ namespace Xamarin.Android.Build.Tests
 				MaxConnectionAttempts = 10,
 			};
 			var startInfo = new SoftDebuggerStartInfo (args) {
-				WorkingDirectory = Path.Combine (dotnet.ProjectDirectory, proj.IntermediateOutputPath, "android", "assets"),
+				WorkingDirectory = Path.Combine (dotnet.ProjectDirectory, proj.IntermediateOutputPath, runtimeId, "android", "assets"),
 			};
 			var options = new DebuggerSessionOptions () {
 				EvaluationOptions = EvaluationOptions.DefaultOptions,
 			};
 			options.EvaluationOptions.UseExternalTypeResolver = true;
 			ClearAdbLogcat ();
+			dotnet.BuildLogFile = Path.Combine (Root, dotnet.ProjectDirectory, "run.log");
 			Assert.True (dotnet.Build ("Run", new string [] {
 				$"AndroidSdbTargetPort={port}",
 				$"AndroidSdbHostPort={port}",
 				"AndroidAttachDebugger=True",
 			}), "Project should have run.");
-
+			WaitForPermissionActivity (Path.Combine (Root, dotnet.ProjectDirectory, "permission-logcat.log"));
 			Assert.IsTrue (WaitForDebuggerToStart (Path.Combine (Root, dotnet.ProjectDirectory, "logcat.log")), "Activity should have started");
 			// we need to give a bit of time for the debug server to start up.
 			WaitFor (2000);
