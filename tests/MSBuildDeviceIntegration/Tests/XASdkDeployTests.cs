@@ -42,6 +42,7 @@ namespace Xamarin.Android.Build.Tests
 			var dotnet = new DotNetCLI (proj, Path.Combine (fullProjDir, proj.ProjectFilePath));
 
 			Assert.IsTrue (dotnet.Run (), "`dotnet run` should succeed");
+			WaitForPermissionActivity (Path.Combine (Root, dotnet.ProjectDirectory, "permission-logcat.log"));
 			bool didLaunch = WaitForActivityToStart (proj.PackageName, "MainActivity",
 				Path.Combine (fullProjDir, "logcat.log"), 30);
 			RunAdbCommand ($"uninstall {proj.PackageName}");
